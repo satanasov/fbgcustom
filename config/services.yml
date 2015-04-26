@@ -3,7 +3,6 @@ services:
         class: anavaro\fbgcustom\event\main_listener
         arguments:
             - @auth
-            - @cache
             - @config
             - @dbal.conn
             - @request
