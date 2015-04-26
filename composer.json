@@ -1,0 +1,29 @@
+{
+	"name": "anavaro/fbgcustom",
+	"type": "phpbb-extension",
+	"description": "This extension add custom to the F-BG site additions",
+	"homepage": "",
+	"version": "0.1",
+	"time": "2015-04-26",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Stanislav Atanasov",
+			"email": "lucifer@anavaro.com",
+			"homepage": "http://anavaro.com",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.3"
+	},
+	"require-dev": {
+		"phpbb/epv": "dev-master"
+	},
+	"extra": {
+		"display-name": "phpBB 3.1 F-BG Custom",
+		"soft-require": {
+			"phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
+		}
+	}
+}
