@@ -55,17 +55,20 @@ class main_listener implements EventSubscriberInterface
 
 	public function user_setup_event()
 	{
-		// Ok so we need to set some cookies! Let's first get them!
-		$cookie_jid = $this->request->variable($this->config['cookie_name'] . '_jid', '', true, \phpbb\request\request_interface::COOKIE);
-		$cookie_nick = $this->request->variable($this->config['cookie_name'] . '_nick', '', true, \phpbb\request\request_interface::COOKIE);
+		if ($this->user->data['user_id'] != ANONYMOUS || $this->user->data['user_type'] != USER_IGNORE)
+		{
+			// Ok so we need to set some cookies! Let's first get them!
+			$cookie_jid = $this->request->variable($this->config['cookie_name'] . '_jid', '', true, \phpbb\request\request_interface::COOKIE);
+			$cookie_nick = $this->request->variable($this->config['cookie_name'] . '_nick', '', true, \phpbb\request\request_interface::COOKIE);
 
-		if (!$cookie_jid)
-		{
-			$this->user->set_cookie('jid', $this->user->data['username_clean']."@chat.f-bg.org", time() + 108000);
-		}
-		if (!$cookie_nick)
-		{
-			$this->user->set_cookie('nick', $this->user->data['username'], time() + 108000);
+			if (!$cookie_jid)
+			{
+				$this->user->set_cookie('jid', $this->user->data['username_clean']."@chat.f-bg.org", time() + 108000);
+			}
+			if (!$cookie_nick)
+			{
+				$this->user->set_cookie('nick', $this->user->data['username'], time() + 108000);
+			}
 		}
 	}
 }
