@@ -21,6 +21,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.user_setup'		=> 'user_setup_event',
+			'core.user_add_after'	=> 'remove_registered_group',
 		);
 	}
 	
@@ -42,7 +43,8 @@ class main_listener implements EventSubscriberInterface
 	* @param string			$php_ext	phpEx
 	*/
 	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, 
-	\phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper)
+	\phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper,
+	$phpbb_root_path, $phpEx)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
@@ -51,6 +53,8 @@ class main_listener implements EventSubscriberInterface
 		$this->template = $template;
 		$this->user = $user;
 		$this->helper = $helper;
+		$this->phpbb_root_path = $phpbb_root_path;
+		$this->phpEx = $phpEx;
 	}
 
 	public function user_setup_event()
@@ -70,5 +74,19 @@ class main_listener implements EventSubscriberInterface
 				$this->user->set_cookie('nick', $this->user->data['username'], time() + 108000);
 			}
 		}
+		if ($this->user->data['user_id'] != ANONYMOUS && $this->user->data['group_id'] == 15 && $this->user->data['user_posts'] >= $this->config['new_member_post_limit'])
+		{
+			if (!function_exists('group_user_add'))
+			{
+				require($this->phpbb_root_path . 'includes/functions_user.' . $this->phpEx);
+			}
+			group_user_add(2, $this->user->data['user_id']);
+		}
+	}
+
+	public function remove_registered_group($event)
+	{
+		$user_id = $event['user_id'];
+		group_user_del(2, $user_id);
 	}
 }
