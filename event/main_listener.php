@@ -21,7 +21,7 @@ class main_listener implements EventSubscriberInterface
 	{
 		return array(
 			'core.user_setup'		=> 'user_setup_event',
-			'core.user_add_after'	=> 'remove_registered_group',
+			//'core.user_add_after'	=> 'remove_registered_group',
 		);
 	}
 	
@@ -74,14 +74,14 @@ class main_listener implements EventSubscriberInterface
 				$this->user->set_cookie('nick', $this->user->data['username'], time() + 108000);
 			}
 		}
-		if ($this->user->data['user_id'] != ANONYMOUS && $this->user->data['group_id'] == 15 && $this->user->data['user_posts'] >= $this->config['new_member_post_limit'])
+		/*if ($this->user->data['user_id'] != ANONYMOUS && $this->user->data['group_id'] == 15 && $this->user->data['user_posts'] >= $this->config['new_member_post_limit'])
 		{
 			if (!function_exists('group_user_add'))
 			{
 				require($this->phpbb_root_path . 'includes/functions_user.' . $this->phpEx);
 			}
-			group_user_add(2, $this->user->data['user_id']);
-		}
+			group_user_add(2, $this->user->data['user_id'], false, false, true);
+		}*/
 	}
 
 	public function remove_registered_group($event)
