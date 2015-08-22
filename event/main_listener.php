@@ -82,6 +82,10 @@ class main_listener implements EventSubscriberInterface
 			}
 			group_user_add(2, $this->user->data['user_id'], false, false, true);
 		}*/
+		$this->user->add_lang_ext('anavaro/fbgcustom', 'test');
+		$this->template->assign_vars(array(
+			'TEST' => $this->user->lang('TEST_LANG_DAYS', 1, 0, 5),
+		));
 	}
 
 	public function remove_registered_group($event)
