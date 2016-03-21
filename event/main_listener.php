@@ -22,6 +22,7 @@ class main_listener implements EventSubscriberInterface
 		return array(
 			'core.user_setup'		=> 'user_setup_event',
 			//'core.user_add_after'	=> 'remove_registered_group',
+//			'core.memberlist_modify_sql_query_data'	=> 'remove_inactive_from_memberlist',
 		);
 	}
 	
@@ -59,7 +60,7 @@ class main_listener implements EventSubscriberInterface
 
 	public function user_setup_event()
 	{
-		if ($this->user->data['user_id'] != ANONYMOUS || $this->user->data['user_type'] != USER_IGNORE)
+		if ($this->user->data['user_id'] != ANONYMOUS || $this->user->data['user_type'] != USER_IGNORE || $this->user->data['group_id'] != 15)
 		{
 			// Ok so we need to set some cookies! Let's first get them!
 			$cookie_jid = $this->request->variable($this->config['cookie_name'] . '_jid', '', true, \phpbb\request\request_interface::COOKIE);
@@ -73,6 +74,12 @@ class main_listener implements EventSubscriberInterface
 			{
 				$this->user->set_cookie('nick', $this->user->data['username'], time() + 108000);
 			}
+		}
+		if ($this->user->data['group_id'] != 15)
+		{
+			$this->template->assign_vars(array(
+				'ENABLE_CHAT' => true,
+			));
 		}
 		/*if ($this->user->data['user_id'] != ANONYMOUS && $this->user->data['group_id'] == 15 && $this->user->data['user_posts'] >= $this->config['new_member_post_limit'])
 		{
@@ -88,5 +95,12 @@ class main_listener implements EventSubscriberInterface
 	{
 		$user_id = $event['user_id'];
 		group_user_del(2, $user_id);
+	}
+	
+	public function remove_inactive_from_memberlist($event)
+	{
+		$where = $event['sql_where'];
+		$where .= ' AND user_type != 1';
+		$event['sql_where'] = $where;
 	}
 }
