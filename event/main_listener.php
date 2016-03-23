@@ -60,7 +60,7 @@ class main_listener implements EventSubscriberInterface
 
 	public function user_setup_event()
 	{
-		if ($this->user->data['user_id'] != ANONYMOUS || $this->user->data['user_type'] != USER_IGNORE || $this->user->data['group_id'] != 15)
+		if (($this->user->data['user_id'] != ANONYMOUS || $this->user->data['user_type'] != USER_IGNORE) && $this->user->data['group_id'] != 15)
 		{
 			// Ok so we need to set some cookies! Let's first get them!
 			$cookie_jid = $this->request->variable($this->config['cookie_name'] . '_jid', '', true, \phpbb\request\request_interface::COOKIE);
