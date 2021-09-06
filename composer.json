@@ -21,7 +21,7 @@
 		"phpbb/epv": "dev-master"
 	},
 	"extra": {
-		"display-name": "phpBB 3.1 F-BG Custom",
+		"display-name": "phpBB 3.3 F-BG Custom",
 		"soft-require": {
 			"phpbb/phpbb": ">=3.1.0-RC2,<3.2.*@dev"
 		}
